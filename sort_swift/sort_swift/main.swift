@@ -54,6 +54,38 @@ func bubbleSortBetter(_ array: inout [Int]){
     }
 }
 
+/**
+ 鸡尾酒排序（英语：Cocktail shaker sort）
+ 亦为定向冒泡排序，鸡尾酒搅拌排序，搅拌排序也可以视作选择排序的一种变形），涟漪排序，来回排序或快乐小时排序，是冒泡排序的一种变形。此算法与冒泡排序的不同处在于排序时是以双向在序列中进行排序。
+ 鸡尾酒排序最糟或是平均所花费的次数都是O(n^2)，但如果序列在一开始已经大部分排序过的话，会接近O(n)
+ */
+func cocktailSort(_ array:inout [Int]){
+    var left = 0
+    var right = array.count-1
+    
+    while left<right{
+        for i in left...right-1{
+            if(array[i]>array[i+1]){
+                ///>元素交换
+                let temp = array[i]
+                array[i] = array[i+1]
+                array[i+1] = temp
+            }
+        }
+        right-=1
+        for i in (left+1...right).reversed(){
+            if(array[i]<array[i-1]){
+                ///>元素交换
+                let temp = array[i]
+                array[i] = array[i-1]
+                array[i-1] = temp
+            }
+        }
+        left+=1
+    }
+    
+}
+
 
 /**
  选择排序（英语：Selection sort）
@@ -126,9 +158,63 @@ func insertionSort(_ array:inout [Int]){
             j-=1
         }
         array[j+1] = current
+        print(array)
     }
 }
 
-var numbers = [5,4,3,2,1]
-insertionSort(&numbers)
-print(numbers)
+
+
+/**
+ 希尔排序（英语：Shellsort），也称递减增量排序算法，是插入排序的一种更高效的改进版本。希尔排序是非稳定排序算法。
+ 希尔排序是基于插入排序的以下两点性质而提出改进方法的：
+
+ 插入排序在对几乎已经排好序的数据操作时，效率高，即可以达到线性排序的效率
+ 但插入排序一般来说是低效的，因为插入排序每次只能将数据移动一位
+ 
+ 时间平均复杂度：O(n^1.3) 最坏复杂度:O(n^2) 最好复杂度: O(n) 空间复杂度: O(1) 不稳定
+ */
+
+
+func insertionSortStep(_ array:inout [Int]){
+    let step = 1
+    for i in step..<array.count{
+        var j = i-step
+        let current = array[i]
+        while j>=0,array[j]>current{
+            array[j+step] = array[j]
+            j-=step
+        }
+        array[j+step] = current
+        print(array)
+    }
+}
+
+func shellSort(_ array:inout [Int]){
+    var step = array.count/2
+    while step>=1{
+        print("步长：\(step)")
+        for i in step..<array.count{
+            var j = i-step
+            let current = array[i]
+            while j>=0,array[j]>current{
+                array[j+step] = array[j]
+                j-=step
+            }
+            array[j+step] = current
+            
+            print(array)
+        }
+        
+        step = step/2
+    }
+}
+
+var numbers = [7,6,5,44,3,6,7,8,55,3,9,2,7,4,1,22]
+
+
+print("起始数组：\(numbers)")
+shellSort(&numbers)
+print("结果数组：\(numbers)")
+
+
+
