@@ -209,11 +209,99 @@ func shellSort(_ array:inout [Int]){
     }
 }
 
-var numbers = [7,6,5,44,3,6,7,8,55,3,9,2,7,4,1,22]
 
 
-print("起始数组：\(numbers)")
-shellSort(&numbers)
+
+/**
+ 归并排序（英语：Merge sort，或mergesort），是建立在归并操作上的一种有效的排序算法，效率为O(log n)。1945年由约翰·冯·诺伊曼首次提出。该算法是采用分治法（Divide and Conquer）的一个非常典型的应用，且各层分治递归可以同时进行。
+ */
+
+func merge(_ arr1:[Int],arr2:[Int]) -> [Int]{
+    var i = 0
+    var j = 0
+    var result:[Int] = []
+    while i<arr1.count,j<arr2.count{
+        if arr1[i] <= arr2[j] {
+            result.append(arr1[i])
+            i += 1
+        } else {
+            result.append(arr2[j])
+            j += 1
+        }
+    }
+    if i<arr1.count{
+        result.append(contentsOf: arr1[i..<arr1.count])
+    }else if j<arr2.count{
+        result.append(contentsOf: arr2[j..<arr2.count])
+    }
+    return result
+}
+
+/**
+ 递归法（Top-down）
+ 1.把数组一再拆成两半
+ 2.直到每段长度为 1
+ 3.然后一路向上合并
+ 
+ */
+func mergeSortTopDown(_ array: [Int]) -> [Int] {
+    // 如果数组长度 <= 1，则无需排序
+    guard array.count > 1 else { return array }
+
+    let middle = array.count / 2
+    let left = mergeSortTopDown(Array(array[0..<middle]))
+    let right = mergeSortTopDown(Array(array[middle..<array.count]))
+
+    return merge(left, arr2: right)
+}
+
+
+/**
+ 迭代版（Bottom-Up）：
+ 1. 从最小的区段开始（长度 1）两两合并成长度 2 的有序段
+ 2. 然后合并成长度 4 的有序段
+ 再成为长度 8、16…
+ */
+func mergeSortBottomUp(_ array: [Int]) -> [Int] {
+    var result:[Int] = array
+    let n = array.count
+
+    var size = 1
+    var round = 1
+
+    while size < n {
+        var mArr:[Int] = []
+        print("===== Round \(round), size = \(size) =====")
+        var leftStart = 0
+        
+        while leftStart + size < n {
+            let arr1 = Array(result[leftStart..<leftStart+size])
+            let arr2 = Array(result[leftStart+size..<min(leftStart+2*size, n)])
+            
+            mArr.append(contentsOf: merge(arr1, arr2: arr2))
+            leftStart += 2 * size
+        }
+        
+        ///>合并操作完之后，原数组有剩余元素
+        if n - leftStart>0{
+            mArr.append(contentsOf: Array(result[leftStart..<result.count]))
+        }
+
+        print("After round \(round): \(mArr)\n")
+        size *= 2
+        round += 1
+        result = mArr
+    }
+
+    return result
+}
+
+
+
+
+var numbers = [7,6,5,44,3,6,7,8,55,3,9,2,7,4,1]
+
+numbers = mergeSortTopDown(numbers)
 print("结果数组：\(numbers)")
 
 
