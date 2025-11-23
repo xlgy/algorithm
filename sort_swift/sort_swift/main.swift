@@ -216,7 +216,7 @@ func shellSort(_ array:inout [Int]){
  归并排序（英语：Merge sort，或mergesort），是建立在归并操作上的一种有效的排序算法，效率为O(log n)。1945年由约翰·冯·诺伊曼首次提出。该算法是采用分治法（Divide and Conquer）的一个非常典型的应用，且各层分治递归可以同时进行。
  */
 
-func merge(_ arr1:[Int],arr2:[Int]) -> [Int]{
+func merge(_ arr1:[Int],_ arr2:[Int]) -> [Int]{
     var i = 0
     var j = 0
     var result:[Int] = []
@@ -252,7 +252,7 @@ func mergeSortTopDown(_ array: [Int]) -> [Int] {
     let left = mergeSortTopDown(Array(array[0..<middle]))
     let right = mergeSortTopDown(Array(array[middle..<array.count]))
 
-    return merge(left, arr2: right)
+    return merge(left,right)
 }
 
 
@@ -278,7 +278,7 @@ func mergeSortBottomUp(_ array: [Int]) -> [Int] {
             let arr1 = Array(result[leftStart..<leftStart+size])
             let arr2 = Array(result[leftStart+size..<min(leftStart+2*size, n)])
             
-            mArr.append(contentsOf: merge(arr1, arr2: arr2))
+            mArr.append(contentsOf: merge(arr1, arr2))
             leftStart += 2 * size
         }
         
@@ -298,11 +298,38 @@ func mergeSortBottomUp(_ array: [Int]) -> [Int] {
 
 
 
+private func partition(_ arr: inout [Int], _ low: Int, _ high: Int) -> Int {
+    let pivot = arr[high]    // 1️⃣ pivot 选右边最后一个
+    var i = low              // 2️⃣ i 是“下一个要放小元素的位置”
+
+    for j in low..<high {    // 3️⃣ j 用来扫描整个区间
+        if arr[j] < pivot {  // 4️⃣ 找到比 pivot 小的
+            arr.swapAt(i, j) // 放到左区
+            i += 1           // i 往右移一格
+        }
+    }
+
+    arr.swapAt(i, high)      // 5️⃣ 最后把 pivot 放到正确位置
+    return i                 // 6️⃣ 返回 pivot 的位置
+}
+
+func quickSort(_ array:inout [Int], _ low: Int, _ high: Int){
+    if low >= high{
+        return
+    }
+    
+    let p = partition(&array, low, high)
+    quickSort(&array, low, p-1)
+    quickSort(&array, p+1, high)
+}
+
 
 var numbers = [7,6,5,44,3,6,7,8,55,3,9,2,7,4,1]
 
-numbers = mergeSortTopDown(numbers)
+quickSort(&numbers,0,numbers.count-1)
 print("结果数组：\(numbers)")
 
 
+var a = [9,8,7,6,5,4,3,2,1]
+partition(&a, 0, 8)
 
