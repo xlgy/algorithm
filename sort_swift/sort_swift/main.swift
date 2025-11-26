@@ -7,6 +7,7 @@
 
 import Foundation
 
+//MARK: 冒泡排序
 /**
  冒泡排序（英语：Bubble Sort）
  又称为泡式排序，是一种简单的排序算法。它重复地走访过要排序的数列，一次比较两个元素，如果它们的顺序错误就把它们交换过来。走访数列的工作是重复地进行直到没有再需要交换，也就是说该数列已经排序完成。这个算法的名字由来是因为越小的元素会经由交换慢慢“浮”到数列的顶端。
@@ -54,6 +55,7 @@ func bubbleSortBetter(_ array: inout [Int]){
     }
 }
 
+//MARK: 鸡尾酒排序
 /**
  鸡尾酒排序（英语：Cocktail shaker sort）
  亦为定向冒泡排序，鸡尾酒搅拌排序，搅拌排序也可以视作选择排序的一种变形），涟漪排序，来回排序或快乐小时排序，是冒泡排序的一种变形。此算法与冒泡排序的不同处在于排序时是以双向在序列中进行排序。
@@ -86,7 +88,7 @@ func cocktailSort(_ array:inout [Int]){
     
 }
 
-
+//MARK: 选择排序
 /**
  选择排序（英语：Selection sort）
  是一种简单直观的排序算法。它的工作原理如下。首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置，然后，再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。以此类推，直到所有元素均排序完毕。
@@ -114,7 +116,7 @@ func selectionSort(_ array:inout [Int]) {
     }
 }
 
-
+//MARK: 插入排序
 /**
  插入排序（英语：Insertion Sort）
  是一种简单直观的排序算法。它的工作原理是通过构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应位置并插入。插入排序在实现上，通常采用in-place排序（即只需用到O(1)的额外空间的排序），因而在从后向前扫描过程中，需要反复把已排序元素逐步向后挪位，为最新元素提供插入空间。
@@ -163,7 +165,7 @@ func insertionSort(_ array:inout [Int]){
 }
 
 
-
+//MARK: 希尔排序
 /**
  希尔排序（英语：Shellsort），也称递减增量排序算法，是插入排序的一种更高效的改进版本。希尔排序是非稳定排序算法。
  希尔排序是基于插入排序的以下两点性质而提出改进方法的：
@@ -211,7 +213,7 @@ func shellSort(_ array:inout [Int]){
 
 
 
-
+//MARK: 归并排序
 /**
  归并排序（英语：Merge sort，或mergesort），是建立在归并操作上的一种有效的排序算法，效率为O(log n)。1945年由约翰·冯·诺伊曼首次提出。该算法是采用分治法（Divide and Conquer）的一个非常典型的应用，且各层分治递归可以同时进行。
  */
@@ -296,8 +298,7 @@ func mergeSortBottomUp(_ array: [Int]) -> [Int] {
     return result
 }
 
-
-
+//MARK: 快速排序
 private func partition(_ arr: inout [Int], _ low: Int, _ high: Int) -> Int {
     let pivot = arr[high]    // 1️⃣ pivot 选右边最后一个
     var i = low              // 2️⃣ i 是“下一个要放小元素的位置”
@@ -328,8 +329,4 @@ var numbers = [7,6,5,44,3,6,7,8,55,3,9,2,7,4,1]
 
 quickSort(&numbers,0,numbers.count-1)
 print("结果数组：\(numbers)")
-
-
-var a = [9,8,7,6,5,4,3,2,1]
-partition(&a, 0, 8)
 
